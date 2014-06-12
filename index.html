@@ -1,0 +1,36 @@
+ <!DOCTYPE html> 
+ 
+ <html>
+    <head>
+        <meta charset="UTF-8">
+        
+        <title>
+            AniTrack ~ Chinese Girl Cartoon Tracking System
+        </title>
+        
+        <!--Remote-->
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/overcast/jquery-ui.css" />
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+        
+        <!--Dependencies-->
+        <link rel="stylesheet" href="jtable-themes/metro/blue/jtable.min.css" />
+        <script type="text/javascript" src="jtable.min.js"></script>
+        
+        <!--Local-->
+        <link rel="stylesheet" href="styles/default/default.css" />
+        <script type="text/javascript" src="constant.js"></script>
+        <script type="text/javascript" src="helper.js"></script>
+        <script type="text/javascript" src="scraper.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+    </head>
+    <body>
+        Username: <input type="text" id="inputUsername" /><input type="button" id="getButton" value="GET"/>
+        <input type="button" value="Export" id="exportButton" />
+        <input type="button" value="Import" id="importButton" accept=".dat" />
+        <input type="file" id="hiddenFileInput" style="display:none" />
+        <div id="progressBar"></div>
+        <div id="container"></div>
+    </body>
+ </html>
