@@ -78,7 +78,7 @@ $(function ()
                         var sortingCommand = jtParams.jtSorting.split(' ');
                         
                         // Need to override title since it has an anchor link in it
-                        var fieldToSort = (sortingCommand[0] == 'title') ? 'textTitle' : sortingCommand[0];
+                        var fieldToSort = sortingCommand[0];
                         var direction = (sortingCommand[1] == 'ASC');
                         
                         var unsortedData = tableData.Records;
@@ -99,23 +99,42 @@ $(function ()
                     {
                         list: false
                     },
-                    textTitle:
-                    {
-                        list: false
-                    },
                     title:
                     {
                         title: 'Title',
-                        width: '80%'
+                        width: '80%',
+                        display: function (data)
+                        {
+                            return '<a target="_blank" href="' + 
+                                   DATA_SOURCE_ROOT + data.record.url + '">' + 
+                                   data.record.title + 
+                                   '</a>';
+                        }
                     },
                     rating: 
                     {
                         title: 'Rating',
-                        width: '20%'
+                        width: '10%'
                     },
                     category:
                     {
-                        title: 'Category'
+                        title: 'Category',
+                        width: '10%',
+                        display: function (data)
+                        {
+                            switch (parseInt(data.record.category))
+                            {
+                                case CATEGORY_TYPE.wantToSee:
+                                    return 'Want to See';
+                                    break;
+                                case CATEGORY_TYPE.seenSome:
+                                    return 'Seen Some';
+                                    break;
+                                case CATEGORY_TYPE.seenAll:
+                                    return 'Seen All';
+                                    break;
+                            }
+                        }
                     }
                 }
             });

@@ -58,7 +58,7 @@ function generateTextFileDownload(filename, text)
 }
 
 /**
- Digs through an object for a specific key
+ Digs through an object with variable depth for a specific value given a key
  @param data [object] The object to search through
  @param searchKey [string] The key to search for
  @param callback [function] Called when finished with found value as first param
@@ -85,6 +85,28 @@ function valueByKey(data, searchKey, callback)
     {
         callback(foundValue);
     }
+}
+
+/**
+ Searches through an object's properties for a specific key given a value.
+ Will not dig in further.
+ @param data [object] The object to search through
+ @param searchKey [string] The key to search for
+ @param callback [function] Called when finished with found key as first param
+ */
+function keyByValueShallow(data, searchValue, callback) 
+{
+    var foundValue;
+    
+    for (var property in data) 
+    {
+        if (data.hasOwnProperty(prop) && data[property] === searchValue) 
+        {
+            return property;
+        }
+    }
+    
+    callback(foundValue);
 }
 
 /**

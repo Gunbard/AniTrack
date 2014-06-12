@@ -11,7 +11,6 @@
     ENTRY_MODEL
     {
         'title':            string
-        'textTitle':        string
         'url':              string
         'rating':           string
         'comment':          string
@@ -74,8 +73,7 @@ function getEntriesForCategory(username, category, callback)
                     var newEntry = 
                     {
                         'id':           i,
-                        'textTitle':    title.trim(),
-                        'title':        '<a target="_blank" href="' + DATA_SOURCE_ROOT + url + '">' + title.trim() + '</a>',
+                        'title':        title.trim(),
                         'url':          url,
                         'rating':       rating,
                         'comment':      comment,
