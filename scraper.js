@@ -14,17 +14,20 @@
         'url':              string
         'rating':           string
         'comment':          string
+        'category':         CATEGORY_TYPE
         
         REQ. ADDTL PARSING:
         'userRatings':      ???
         'genres':           array [string]
         'op':               string
         'ed':               string
-        'vintage':          date?
+        'vintage':          string
+        'epLength':         int
         
         USER ADDED:
-        'dateWatched':      date
-        'willNotFinish':    bool/check
+        'dateStarted':      date
+        'dateFinished':     date
+        'currentEp':        length
         
     }
  */
@@ -65,9 +68,9 @@ function getEntriesForCategory(username, category, callback)
                     var url = entryContainer && entryContainer.a ? 
                               entryContainer.a.href : '';
                     var rating = currentEntry[1] && currentEntry[1].p ? 
-                                 currentEntry[1].p : '';
+                                 currentEntry[1].p : '--';
                     var comment = currentEntry[2] ? 
-                                  currentEntry[2].small : '';
+                                  currentEntry[2].small : '--';
 
                     // Format data
                     var newEntry = 

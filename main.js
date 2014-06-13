@@ -75,9 +75,9 @@ $(function ()
                 {
                     listAction: function (postData, jtParams)
                     {
+                        // Sort table based on sorting command
                         var sortingCommand = jtParams.jtSorting.split(' ');
                         
-                        // Need to override title since it has an anchor link in it
                         var fieldToSort = sortingCommand[0];
                         var direction = (sortingCommand[1] == 'ASC');
                         
@@ -133,9 +133,24 @@ $(function ()
                                 case CATEGORY_TYPE.seenAll:
                                     return 'Seen All';
                                     break;
+                                default:
+                                    return '--'
                             }
                         }
                     }
+                },
+                toolbar: 
+                {
+                    items: 
+                    [
+                        {
+                            text: 'Export to CSV',
+                            click: function () 
+                            {
+                            
+                            }
+                        }
+                    ]
                 }
             });
             
