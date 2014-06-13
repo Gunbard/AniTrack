@@ -71,6 +71,9 @@ function getEntriesForCategory(username, category, callback)
                                  currentEntry[1].p : '--';
                     var comment = currentEntry[2] ? 
                                   currentEntry[2].small : '--';
+                                  
+                    // Convert rating to a number so we can do calculations and stuff
+                    rating = RATINGS_TYPE[rating];
 
                     // Format data
                     var newEntry = 

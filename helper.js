@@ -123,11 +123,25 @@ function sortByKey(arrayToSort, keyName, ascend)
     {
         if (ascend)
         {
-            return a[keyName].localeCompare(b[keyName]);
+            if (typeof a[keyName] == 'string')
+            {
+                return a[keyName].localeCompare(b[keyName]);
+            }
+            else if (typeof a[keyName] == 'number')
+            {
+                return a[keyName] > b[keyName];
+            }
         }
         else
         {
-            return b[keyName].localeCompare(a[keyName]);
+            if (typeof a[keyName] == 'string')
+            {
+                return b[keyName].localeCompare(a[keyName]);
+            }
+            else if (typeof a[keyName] == 'number')
+            {
+                return b[keyName] > a[keyName];
+            }
         }
     });
 }
