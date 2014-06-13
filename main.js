@@ -114,7 +114,16 @@ $(function ()
                     rating: 
                     {
                         title: 'Rating',
-                        width: '10%'
+                        width: '10%',
+                        display: function (data)
+                        {
+                            if (data.record.rating > -1)
+                            {
+                                return RATINGS_DISPLAY_TEXT[data.record.rating]; 
+                            }
+                            
+                            return '--';
+                        }
                     },
                     category:
                     {
