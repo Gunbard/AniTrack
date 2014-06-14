@@ -4,9 +4,9 @@
 
 /**
  Gets an object list of all entries for a category
- @param username [string] The username to query
- @param category [CATEGORY_TYPE] The category to query
- @param callback Called when finished with first param entries [array]
+ @param username {string} The username to query
+ @param category {CATEGORY_TYPE} The category to query
+ @param callback Called when finished with first param entries {array}
  
     ENTRY_MODEL
     {
@@ -63,6 +63,7 @@ function getEntriesForCategory(username, category, callback)
                     {
                         continue;
                     }
+                    
                     var title = entryContainer && entryContainer.a ? 
                                 entryContainer.a.font.content : '';
                     var url = entryContainer && entryContainer.a ? 
@@ -71,7 +72,7 @@ function getEntriesForCategory(username, category, callback)
                                  currentEntry[1].p : '--';
                     var comment = currentEntry[2] ? 
                                   currentEntry[2].small : '--';
-                                  
+                    
                     // Convert rating to a number so we can do calculations and stuff
                     rating = RATINGS_TYPE[rating];
 

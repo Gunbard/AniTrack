@@ -2,7 +2,7 @@
  AniTrack
  Serverless, cross platform Chinese Girl Cartoon Tracking System
  Runs on most modern browsers, including mobile browsers.
- Author: Gunbard
+ @author Gunbard
  License: MIT
  */
  
@@ -152,36 +152,34 @@ $(function ()
                 toolbar: 
                 {
                     items: 
-                    [
+                    [{
+                        text: 'Export to CSV',
+                        click: function () 
                         {
-                            text: 'Export to CSV',
-                            click: function () 
+                            // Generate a basic csv file. Add option to remove columns later.
+                            var csvData = 'Title, Rating\n';
+                            var tableEntries = tableData.Records;
+                            
+                            for (var i = 0; i < tableEntries.length; i++)
                             {
-                                // Generate a basic csv file. Add option to remove columns later.
-                                var csvData = 'Title, Rating\n';
-                                var tableEntries = tableData.Records;
-                                
-                                for (var i = 0; i < tableEntries.length; i++)
+                                var entry = tableEntries[i];
+                                csvData += '"' + entry.title + '",' 
+                                        
+                                if (entry.rating > -1)
                                 {
-                                    var entry = tableEntries[i];
-                                    csvData += '"' + entry.title + '",' 
-                                            
-                                    if (entry.rating > -1)
-                                    {
-                                        csvData += RATINGS_DISPLAY_TEXT[entry.rating];
-                                    }
-                                    else
-                                    {
-                                        csvData += ',';
-                                    }
-                                    
-                                    csvData += '\n';                               
+                                    csvData += RATINGS_DISPLAY_TEXT[entry.rating];
+                                }
+                                else
+                                {
+                                    csvData += ',';
                                 }
                                 
-                                generateTextFileDownload('animu.csv', csvData);
+                                csvData += '\n';                               
                             }
+                            
+                            generateTextFileDownload('animu.csv', csvData);
                         }
-                    ]
+                    }]
                 }
             });
             

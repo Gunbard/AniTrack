@@ -5,8 +5,8 @@
 /**
  Uses Yahoo yql as a proxy to get cross site data so we don't have to run
  this on a server
- @param url [string] The url to get
- @param callback [function] A callback function (optional)
+ @param url {string} The url to get
+ @param callback {function} A callback function (optional)
  @returns A JSON object of the obtained data
  */
 function crossSiteGet(url, callback)
@@ -31,8 +31,8 @@ function crossSiteGet(url, callback)
 
 /**
  Generates text file to download
- @param filename [string] Name of the file
- @param text [string] The file's text data
+ @param filename {string} Name of the file
+ @param text {string} The file's text data
  */
 function generateTextFileDownload(filename, text) 
 {
@@ -59,9 +59,9 @@ function generateTextFileDownload(filename, text)
 
 /**
  Digs through an object with variable depth for a specific value given a key
- @param data [object] The object to search through
- @param searchKey [string] The key to search for
- @param callback [function] Called when finished with found value as first param
+ @param data {object} The object to search through
+ @param searchKey {string} The key to search for
+ @param callback {function} Called when finished with found value as first param
  */
 function valueByKey(data, searchKey, callback)
 {
@@ -90,9 +90,9 @@ function valueByKey(data, searchKey, callback)
 /**
  Searches through an object's properties for a specific key given a value.
  Will not dig in further.
- @param data [object] The object to search through
- @param searchKey [string] The key to search for
- @param callback [function] Called when finished with found key as first param
+ @param data {object} The object to search through
+ @param searchKey {string} The key to search for
+ @param callback {function} Called when finished with found key as first param
  */
 function keyByValueShallow(data, searchValue, callback) 
 {
@@ -111,9 +111,9 @@ function keyByValueShallow(data, searchValue, callback)
 
 /**
  Sorts an array by key
- @param arrayToSort [array] The array to be sorted
- @param keyName [string] Name of the key to sort byte
- @param ascend [bool] True if sort should be ascending,
+ @param arrayToSort {array} The array to be sorted
+ @param keyName {string} Name of the key to sort byte
+ @param ascend {bool} True if sort should be ascending,
                       false if it should be descending
  @returns The sorted array
  */
