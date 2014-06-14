@@ -7,6 +7,7 @@
  */
  
 var saveData;
+var tableData;
 
 // Check for File API support
 if (!window.File || !window.FileReader || !window.Blob) 
@@ -60,7 +61,7 @@ $(function ()
             $('#container').jtable('destroy');
             
             // Format data for use by jTable
-            var tableData = 
+            tableData = 
             {
                 'Result': 'OK',
                 'Records': entries
@@ -156,7 +157,28 @@ $(function ()
                             text: 'Export to CSV',
                             click: function () 
                             {
-                            
+                                // Generate a basic csv file. Add option to remove columns later.
+                                var csvData = 'Title, Rating\n';
+                                var tableEntries = tableData.Records;
+                                
+                                for (var i = 0; i < tableEntries.length; i++)
+                                {
+                                    var entry = tableEntries[i];
+                                    csvData += '"' + entry.title + '",' 
+                                            
+                                    if (entry.rating > -1)
+                                    {
+                                        csvData += RATINGS_DISPLAY_TEXT[entry.rating];
+                                    }
+                                    else
+                                    {
+                                        csvData += ',';
+                                    }
+                                    
+                                    csvData += '\n';                               
+                                }
+                                
+                                generateTextFileDownload('animu.csv', csvData);
                             }
                         }
                     ]
