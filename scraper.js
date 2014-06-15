@@ -23,6 +23,7 @@
         'ed':               string
         'vintage':          string
         'epLength':         int
+        'thumbnail':        Base64 image
         
         USER ADDED:
         'dateStarted':      date
@@ -37,7 +38,7 @@ function getEntriesForCategory(username, category, callback)
     
     username = encodeURIComponent(username);
     
-    crossSiteGet('http://www.animenewsnetwork.com/MyAnime/?user=' + username + '&categ=' + category, function (data) 
+    crossSiteGet('http://www.animenewsnetwork.com/MyAnime/?user=' + username + '&categ=' + category, 'html', function (data) 
     {
         valueByKey(data, 'table', function (tableElement)
         {
@@ -76,10 +77,14 @@ function getEntriesForCategory(username, category, callback)
                     // Convert rating to a number so we can do calculations and stuff
                     rating = RATINGS_TYPE[rating];
 
+                    // Get other id
+                    var annId = url.match(/id=(\d+)/)[1];
+                    
                     // Format data
                     var newEntry = 
                     {
                         'id':           i,
+                        'annId':        annId,
                         'title':        title.trim(),
                         'url':          url,
                         'rating':       rating,
@@ -96,5 +101,39 @@ function getEntriesForCategory(username, category, callback)
         });
         
         callback(retrievedEntries);
+    });
+}
+
+/**
+ */
+function getAdditionalData(entry)
+{
+    var entryId = entry.annId;
+    crossSiteGet('http://cdn.animenewsnetwork.com/encyclopedia/api.xml?title=' + entryId, 'xml', function (data)
+    {
+        var infoData = data.query.results.ann.anime.info;
+        
+        var info = {};
+        for (var i = 0; i < infoData.length; i++)
+        {
+            if (infoData[i].type && infoData[i].type.length > 0)
+            {
+                var type = infoData[i].type;
+                
+                // Initialize array if not defined
+                if (!info[type])
+                {
+                    info[type] = [];
+                }
+                
+                var contentData = (infoData[i].content) ? infoData[i].content : '';
+                info[type].push(contentData);
+            }
+        }
+        
+        entry['titleData'] = info;
+        entry['eps'] = (info['Number of episodes']) ? info['Number of episodes'][0] : 1;
+        alert(JSON.stringify(entry['titleData']));
+        $('#container').jtable('load');
     });
 }
