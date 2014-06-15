@@ -23,6 +23,7 @@
         'ed':               string
         'vintage':          string
         'epLength':         int
+        'thumbnail':        Base64 image
         
         USER ADDED:
         'dateStarted':      date
@@ -37,7 +38,7 @@ function getEntriesForCategory(username, category, callback)
     
     username = encodeURIComponent(username);
     
-    crossSiteGet('http://www.animenewsnetwork.com/MyAnime/?user=' + username + '&categ=' + category, function (data) 
+    crossSiteGet('http://www.animenewsnetwork.com/MyAnime/?user=' + username + '&categ=' + category, 'html', function (data) 
     {
         valueByKey(data, 'table', function (tableElement)
         {
@@ -76,10 +77,14 @@ function getEntriesForCategory(username, category, callback)
                     // Convert rating to a number so we can do calculations and stuff
                     rating = RATINGS_TYPE[rating];
 
+                    // Get other id
+                    var annId = url.match(/id=(\d+)/)[1];
+                    
                     // Format data
                     var newEntry = 
                     {
                         'id':           i,
+                        'annId':        annId,
                         'title':        title.trim(),
                         'url':          url,
                         'rating':       rating,
@@ -97,4 +102,21 @@ function getEntriesForCategory(username, category, callback)
         
         callback(retrievedEntries);
     });
+}
+
+/**
+ */
+function getAdditionalData(entries, callback)
+{
+    //for (var i = 0; i < entries.length; i++)
+    //{
+        var entryId = entries[1].annId;
+        crossSiteGet('http://cdn.animenewsnetwork.com/encyclopedia/api.xml?title=' + entryId, 'xml', function (data)
+        {
+            objectByValue(data, 'Number of episodes', function (obj)
+            {
+                alert(JSON.stringify(parseInt(obj.content)));
+            });
+        });
+    //}
 }

@@ -35,6 +35,14 @@ $(function ()
         $('#hiddenFileInput').click();
     });
     
+    $('#additionalDataButton').click(function ()
+    {
+        getAdditionalData(tableData.Records, function ()
+        {
+            
+        });
+    });
+    
     $('#progressBar').progressbar
     ({
         value: true
@@ -103,7 +111,7 @@ $(function ()
                     title:
                     {
                         title: 'Title',
-                        width: '80%',
+                        width: '70%',
                         display: function (data)
                         {
                             return '<a target="_blank" href="' + 
@@ -115,7 +123,7 @@ $(function ()
                     rating: 
                     {
                         title: 'Rating',
-                        width: '10%',
+                        width: '5%',
                         display: function (data)
                         {
                             if (data.record.rating > -1)
@@ -129,7 +137,7 @@ $(function ()
                     category:
                     {
                         title: 'Category',
-                        width: '10%',
+                        width: '5%',
                         display: function (data)
                         {
                             switch (parseInt(data.record.category))
@@ -147,6 +155,11 @@ $(function ()
                                     return '--'
                             }
                         }
+                    },
+                    comment:
+                    {
+                        title: 'Comment',
+                        width: '20%'
                     }
                 },
                 toolbar: 

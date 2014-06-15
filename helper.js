@@ -9,21 +9,26 @@
  @param callback {function} A callback function (optional)
  @returns A JSON object of the obtained data
  */
-function crossSiteGet(url, callback)
+function crossSiteGet(url, format, callback)
 {
-    var q = encodeURIComponent('select * from html where url="' + url + '"');
+    var q = encodeURIComponent('select * from ' + format + ' where url="' + url + '"');
     $.ajax
     ({
         type: 'get',
         url: 'http://query.yahooapis.com/v1/public/yql?format=json&q=' + q,
-        dataType: 'html',
+        dataType: 'json',
+        beforeSend: function(xhr)
+        {
+            if (xhr.overrideMimeType)
+            {
+                xhr.overrideMimeType("application/json");
+            }
+        },
         success: function (data) 
         {
             if (data && callback && typeof callback === 'function')
             {
-                data = data.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
-                jsonData = JSON.parse(data);
-                callback(jsonData);
+                callback(data);
             }
         }     
     });
@@ -88,25 +93,33 @@ function valueByKey(data, searchKey, callback)
 }
 
 /**
- Searches through an object's properties for a specific key given a value.
- Will not dig in further.
+ Digs through an object with variable depth for an object with a specific value
  @param data {object} The object to search through
- @param searchKey {string} The key to search for
- @param callback {function} Called when finished with found key as first param
+ @param searchValue {string} The value to search for
+ @param callback {function} Called when finished with found object as first param
  */
-function keyByValueShallow(data, searchValue, callback) 
+function objectByValue(data, searchValue, callback)
 {
-    var foundValue;
+    var foundObj;
     
-    for (var property in data) 
+    if (data && typeof data === 'object') 
     {
-        if (data.hasOwnProperty(prop) && data[property] === searchValue) 
+        $.each(data, function (key, val) 
         {
-            return property;
-        }
+            if (val == searchValue)
+            {
+                foundObj = data;
+                return false;
+            }
+
+            objectByValue(val, searchValue, callback);
+        });
     }
     
-    callback(foundValue);
+    if (foundObj)
+    {
+        callback(foundObj);
+    }
 }
 
 /**
