@@ -35,14 +35,6 @@ $(function ()
         $('#hiddenFileInput').click();
     });
     
-    $('#additionalDataButton').click(function ()
-    {
-        getAdditionalData(tableData.Records, function ()
-        {
-            
-        });
-    });
-    
     $('#progressBar').progressbar
     ({
         value: true
@@ -111,7 +103,7 @@ $(function ()
                     title:
                     {
                         title: 'Title',
-                        width: '70%',
+                        width: '60%',
                         display: function (data)
                         {
                             return '<a target="_blank" href="' + 
@@ -156,10 +148,25 @@ $(function ()
                             }
                         }
                     },
+                    eps:
+                    {
+                        title: 'Ep. Length',
+                        width: '5%'
+                    },
                     comment:
                     {
                         title: 'Comment',
                         width: '20%'
+                    },
+                    getData:
+                    {
+                        sorting: false,
+                        columnResizable: false,
+                        width: '5%',
+                        display: function (data)
+                        {
+                            return '<input type="button" value="Get Data" onClick="getAdditionalData(tableData.Records[' + tableData.Records.indexOf(data.record) + '])">'
+                        }
                     }
                 },
                 toolbar: 

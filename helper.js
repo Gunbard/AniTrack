@@ -93,36 +93,6 @@ function valueByKey(data, searchKey, callback)
 }
 
 /**
- Digs through an object with variable depth for an object with a specific value
- @param data {object} The object to search through
- @param searchValue {string} The value to search for
- @param callback {function} Called when finished with found object as first param
- */
-function objectByValue(data, searchValue, callback)
-{
-    var foundObj;
-    
-    if (data && typeof data === 'object') 
-    {
-        $.each(data, function (key, val) 
-        {
-            if (val == searchValue)
-            {
-                foundObj = data;
-                return false;
-            }
-
-            objectByValue(val, searchValue, callback);
-        });
-    }
-    
-    if (foundObj)
-    {
-        callback(foundObj);
-    }
-}
-
-/**
  Sorts an array by key
  @param arrayToSort {array} The array to be sorted
  @param keyName {string} Name of the key to sort byte

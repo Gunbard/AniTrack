@@ -106,17 +106,34 @@ function getEntriesForCategory(username, category, callback)
 
 /**
  */
-function getAdditionalData(entries, callback)
+function getAdditionalData(entry)
 {
-    //for (var i = 0; i < entries.length; i++)
-    //{
-        var entryId = entries[1].annId;
-        crossSiteGet('http://cdn.animenewsnetwork.com/encyclopedia/api.xml?title=' + entryId, 'xml', function (data)
+    var entryId = entry.annId;
+    crossSiteGet('http://cdn.animenewsnetwork.com/encyclopedia/api.xml?title=' + entryId, 'xml', function (data)
+    {
+        var infoData = data.query.results.ann.anime.info;
+        
+        var info = {};
+        for (var i = 0; i < infoData.length; i++)
         {
-            objectByValue(data, 'Number of episodes', function (obj)
+            if (infoData[i].type && infoData[i].type.length > 0)
             {
-                alert(JSON.stringify(parseInt(obj.content)));
-            });
-        });
-    //}
+                var type = infoData[i].type;
+                
+                // Initialize array if not defined
+                if (!info[type])
+                {
+                    info[type] = [];
+                }
+                
+                var contentData = (infoData[i].content) ? infoData[i].content : '';
+                info[type].push(contentData);
+            }
+        }
+        
+        entry['titleData'] = info;
+        entry['eps'] = (info['Number of episodes']) ? info['Number of episodes'][0] : 1;
+        alert(JSON.stringify(entry['titleData']));
+        $('#container').jtable('load');
+    });
 }
