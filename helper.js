@@ -112,7 +112,7 @@ function sortByKey(arrayToSort, keyName, ascend)
             }
             else if (typeof a[keyName] == 'number')
             {
-                return a[keyName] > b[keyName];
+                return a[keyName] < b[keyName] ? 1 : -1;
             }
         }
         else
@@ -123,7 +123,7 @@ function sortByKey(arrayToSort, keyName, ascend)
             }
             else if (typeof a[keyName] == 'number')
             {
-                return b[keyName] > a[keyName];
+                return b[keyName] < a[keyName] ? 1 : -1;
             }
         }
     });
