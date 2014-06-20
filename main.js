@@ -32,6 +32,178 @@ catch (e)
     alert(errorText);
 }
 
+/**
+ Attaches a lazy loading mechanism to all images
+ */
+function applyLazyload()
+{
+    $('img.lazy').lazyload
+    ({
+        effect: 'fadeIn',
+        failure_limit: 10
+    });
+}
+
+/**
+ Initializes the jTable
+ */
+function buildTable()
+{
+    $('#tableContainer').jtable({});
+    $('#tableContainer').jtable('destroy');
+
+    $('#tableContainer').jtable
+    ({
+        title: 'Chinese Girl Cartoons',
+        sorting: true,
+        defaultSorting: 'title ASC',
+        actions: 
+        {
+            listAction: function (postData, jtParams)
+            {
+                // Sort table based on sorting command
+                var sortingCommand = jtParams.jtSorting.split(' ');
+                
+                var fieldToSort = sortingCommand[0];
+                var direction = (sortingCommand[1] == 'ASC');
+                
+                var unsortedData = tableData.Records;
+                var sortedData = sortByKey(unsortedData, fieldToSort, direction);
+                tableData.Records = sortedData;
+                
+                return tableData;
+            }
+        },
+        fields: 
+        {
+            id: 
+            {
+                key: true,
+                list: false
+            },
+            url:
+            {
+                list: false
+            },
+            thumbnail:
+            {
+                sorting: false,
+                width: '10%',
+                display: function (data)
+                {
+                    if (data.record.thumbnail) 
+                    {
+                        return '<img class="thumbnail lazy" data-original="' + data.record.thumbnail + '" height="150px" />';
+                    }
+                    else
+                    {
+                        return '<div class="thumbnail-holder"></div>';
+                    }
+                }
+            },
+            title:
+            {
+                title: 'Title',
+                width: '50%',
+                display: function (data)
+                {
+                    return '<a target="_blank" href="' + 
+                           DATA_SOURCE_ROOT + data.record.url + '">' + 
+                           data.record.title + 
+                           '</a>';
+                }
+            },
+            rating: 
+            {
+                title: 'Rating',
+                width: '5%',
+                display: function (data)
+                {
+                    if (data.record.rating > -1)
+                    {
+                        return RATINGS_DISPLAY_TEXT[data.record.rating]; 
+                    }
+                    
+                    return '--';
+                }
+            },
+            category:
+            {
+                title: 'Category',
+                width: '5%',
+                display: function (data)
+                {
+                    switch (parseInt(data.record.category))
+                    {
+                        case CATEGORY_TYPE.wantToSee:
+                            return 'Want to See';
+                            break;
+                        case CATEGORY_TYPE.seenSome:
+                            return 'Seen Some';
+                            break;
+                        case CATEGORY_TYPE.seenAll:
+                            return 'Seen All';
+                            break;
+                        default:
+                            return '--'
+                    }
+                }
+            },
+            eps:
+            {
+                title: 'Ep. Length',
+                width: '5%'
+            },
+            comment:
+            {
+                title: 'Comment',
+                width: '20%'
+            },
+            getData:
+            {
+                sorting: false,
+                columnResizable: false,
+                width: '5%',
+                display: function (data)
+                {
+                    return '<input type="button" value="Get Data" onClick="getAdditionalData(tableData.Records[' + tableData.Records.indexOf(data.record) + '])">'
+                }
+            }
+        },
+        toolbar: 
+        {
+            items: 
+            [{
+                text: 'Export to CSV',
+                click: function () 
+                {
+                    // Generate a basic csv file. Add option to remove columns later.
+                    var csvData = 'Title, Rating\n';
+                    var tableEntries = tableData.Records;
+                    
+                    for (var i = 0; i < tableEntries.length; i++)
+                    {
+                        var entry = tableEntries[i];
+                        csvData += '"' + entry.title + '",' 
+                                
+                        if (entry.rating > -1)
+                        {
+                            csvData += RATINGS_DISPLAY_TEXT[entry.rating];
+                        }
+                        else
+                        {
+                            csvData += ',';
+                        }
+                        
+                        csvData += '\n';                               
+                    }
+                    
+                    generateTextFileDownload('animu.csv', csvData);
+                }
+            }]
+        }
+    });
+}
 
 // Ready
 $(function ()
@@ -58,7 +230,10 @@ $(function ()
         reader.onload = function ()
         {
             tableData = JSON.parse(this.result);
-            $('#tableContainer').jtable('load');
+            $('#tableContainer').jtable('reload', function ()
+            {
+                applyLazyload();
+            });
         };
         
         reader.readAsText(selectedFile);
@@ -68,148 +243,6 @@ $(function ()
     ({
         value: true
     });
-    
-    function buildTable()
-    {
-        $('#tableContainer').jtable({});
-        $('#tableContainer').jtable('destroy');
-    
-        $('#tableContainer').jtable
-        ({
-            title: 'Chinese Girl Cartoons',
-            sorting: true,
-            defaultSorting: 'title ASC',
-            actions: 
-            {
-                listAction: function (postData, jtParams)
-                {
-                    // Sort table based on sorting command
-                    var sortingCommand = jtParams.jtSorting.split(' ');
-                    
-                    var fieldToSort = sortingCommand[0];
-                    var direction = (sortingCommand[1] == 'ASC');
-                    
-                    var unsortedData = tableData.Records;
-                    var sortedData = sortByKey(unsortedData, fieldToSort, direction);
-                    tableData.Records = sortedData;
-                    
-                    return tableData;
-                }
-            },
-            fields: 
-            {
-                id: 
-                {
-                    key: true,
-                    list: false
-                },
-                url:
-                {
-                    list: false
-                },
-                title:
-                {
-                    title: 'Title',
-                    width: '60%',
-                    display: function (data)
-                    {
-                        return '<a target="_blank" href="' + 
-                               DATA_SOURCE_ROOT + data.record.url + '">' + 
-                               data.record.title + 
-                               '</a>';
-                    }
-                },
-                rating: 
-                {
-                    title: 'Rating',
-                    width: '5%',
-                    display: function (data)
-                    {
-                        if (data.record.rating > -1)
-                        {
-                            return RATINGS_DISPLAY_TEXT[data.record.rating]; 
-                        }
-                        
-                        return '--';
-                    }
-                },
-                category:
-                {
-                    title: 'Category',
-                    width: '5%',
-                    display: function (data)
-                    {
-                        switch (parseInt(data.record.category))
-                        {
-                            case CATEGORY_TYPE.wantToSee:
-                                return 'Want to See';
-                                break;
-                            case CATEGORY_TYPE.seenSome:
-                                return 'Seen Some';
-                                break;
-                            case CATEGORY_TYPE.seenAll:
-                                return 'Seen All';
-                                break;
-                            default:
-                                return '--'
-                        }
-                    }
-                },
-                eps:
-                {
-                    title: 'Ep. Length',
-                    width: '5%'
-                },
-                comment:
-                {
-                    title: 'Comment',
-                    width: '20%'
-                },
-                getData:
-                {
-                    sorting: false,
-                    columnResizable: false,
-                    width: '5%',
-                    display: function (data)
-                    {
-                        return '<input type="button" value="Get Data" onClick="getAdditionalData(tableData.Records[' + tableData.Records.indexOf(data.record) + '])">'
-                    }
-                }
-            },
-            toolbar: 
-            {
-                items: 
-                [{
-                    text: 'Export to CSV',
-                    click: function () 
-                    {
-                        // Generate a basic csv file. Add option to remove columns later.
-                        var csvData = 'Title, Rating\n';
-                        var tableEntries = tableData.Records;
-                        
-                        for (var i = 0; i < tableEntries.length; i++)
-                        {
-                            var entry = tableEntries[i];
-                            csvData += '"' + entry.title + '",' 
-                                    
-                            if (entry.rating > -1)
-                            {
-                                csvData += RATINGS_DISPLAY_TEXT[entry.rating];
-                            }
-                            else
-                            {
-                                csvData += ',';
-                            }
-                            
-                            csvData += '\n';                               
-                        }
-                        
-                        generateTextFileDownload('animu.csv', csvData);
-                    }
-                }]
-            }
-        });
-    }
     
     buildTable();
     
@@ -237,7 +270,10 @@ $(function ()
                 'Records': entries
             };
                         
-            $('#tableContainer').jtable('load');
+            $('#tableContainer').jtable('reload', function ()
+            {
+                applyLazyload();
+            });
             
             $('#progressBar').progressbar
             ({
