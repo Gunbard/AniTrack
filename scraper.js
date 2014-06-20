@@ -134,6 +134,6 @@ function getAdditionalData(entry)
         entry['titleData'] = info;
         entry['eps'] = (info['Number of episodes']) ? info['Number of episodes'][0] : 1;
         alert(JSON.stringify(entry['titleData']));
-        $('#container').jtable('load');
+        $('#tableContainer').jtable('load');
     });
 }
