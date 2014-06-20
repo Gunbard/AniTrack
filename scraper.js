@@ -126,14 +126,45 @@ function getAdditionalData(entry)
                     info[type] = [];
                 }
                 
-                var contentData = (infoData[i].content) ? infoData[i].content : '';
+                var contentData;
+                
+                if (infoData[i].content)
+                {
+                    contentData = infoData[i].content;
+                }
+                else if (infoData[i].img)
+                {
+                    var imageData = infoData[i]['img'];
+                    if (typeof imageData == 'array')
+                    {
+                        contentData = imageData[0];
+                    }
+                    else
+                    {
+                        contentData = imageData;
+                    }
+                }
+                
                 info[type].push(contentData);
             }
         }
         
         entry['titleData'] = info;
+        
         entry['eps'] = (info['Number of episodes']) ? info['Number of episodes'][0] : 1;
-        alert(JSON.stringify(entry['titleData']));
+        
+        if (info['Picture']) 
+        {
+            if (info['Picture'][0].length > 1)
+            {
+                entry['thumbnail'] = info['Picture'][0][0]['src'];
+            }
+            else
+            {
+                entry['thumbnail'] = info['Picture'][0]['src'];   
+            }
+        }
+        
         $('#tableContainer').jtable('load');
     });
 }

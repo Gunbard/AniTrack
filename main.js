@@ -107,10 +107,26 @@ $(function ()
                 {
                     list: false
                 },
+                thumbnail:
+                {
+                    sorting: false,
+                    width: '10%',
+                    display: function (data)
+                    {
+                        if (data.record.thumbnail) 
+                        {
+                            return '<img src="' + data.record.thumbnail + '" width="150"/>';
+                        }
+                        else
+                        {
+                            return '';
+                        }
+                    }
+                },
                 title:
                 {
                     title: 'Title',
-                    width: '60%',
+                    width: '50%',
                     display: function (data)
                     {
                         return '<a target="_blank" href="' + 
