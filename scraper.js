@@ -165,6 +165,9 @@ function getAdditionalData(entry)
             }
         }
         
-        $('#tableContainer').jtable('load');
+        $('#tableContainer').jtable('reload', function ()
+        {
+            applyLazyload();
+        });
     });
 }

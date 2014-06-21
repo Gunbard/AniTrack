@@ -32,6 +32,14 @@ catch (e)
     alert(errorText);
 }
 
+function applyLazyload()
+{
+    $('img.lazy').lazyload
+    ({
+        effect: 'fadeIn',
+        failure_limit: 10
+    });
+}
 
 // Ready
 $(function ()
@@ -58,7 +66,10 @@ $(function ()
         reader.onload = function ()
         {
             tableData = JSON.parse(this.result);
-            $('#tableContainer').jtable('load');
+            $('#tableContainer').jtable('reload', function ()
+            {
+                applyLazyload();
+            });
         };
         
         reader.readAsText(selectedFile);
@@ -115,7 +126,7 @@ $(function ()
                     {
                         if (data.record.thumbnail) 
                         {
-                            return '<img class="thumbnail" src="' + data.record.thumbnail + '" height="150px" />';
+                            return '<img class="thumbnail lazy" data-original="' + data.record.thumbnail + '" height="150px" />';
                         }
                         else
                         {
@@ -253,7 +264,10 @@ $(function ()
                 'Records': entries
             };
                         
-            $('#tableContainer').jtable('load');
+            $('#tableContainer').jtable('reload', function ()
+            {
+                applyLazyload();
+            });
             
             $('#progressBar').progressbar
             ({
