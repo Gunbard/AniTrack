@@ -115,11 +115,11 @@ $(function ()
                     {
                         if (data.record.thumbnail) 
                         {
-                            return '<img src="' + data.record.thumbnail + '" width="150"/>';
+                            return '<img class="thumbnail" src="' + data.record.thumbnail + '" height="150px" />';
                         }
                         else
                         {
-                            return '';
+                            return '<div class="thumbnail-holder"></div>';
                         }
                     }
                 },

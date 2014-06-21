@@ -1,0 +1,11 @@
+.thumbnail
+{
+    display:        block; 
+    margin-left:    auto; 
+    margin-right:   auto;
+}
+
+.thumbnail-holder
+{
+    height:         150px;
+}
