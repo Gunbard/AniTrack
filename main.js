@@ -33,6 +33,28 @@ catch (e)
 }
 
 /**
+ Saves data to localStorage
+ */
+function saveData()
+{
+    localStorage.setItem('savedTableData', JSON.stringify(tableData));
+    console.log('[INFO] Save OK');
+}
+
+/**
+ Retrieves data from localStorage
+ */
+function loadData()
+{
+    var saveData = localStorage.savedTableData;
+    if (saveData)
+    {
+        tableData = JSON.parse(saveData);
+        console.log('[INFO] Load OK');
+    }
+}
+
+/**
  Attaches a lazy loading mechanism to all images
  */
 function applyLazyload()
@@ -233,6 +255,7 @@ $(function ()
             $('#tableContainer').jtable('reload', function ()
             {
                 applyLazyload();
+                saveData();
             });
         };
         
@@ -244,7 +267,15 @@ $(function ()
         value: true
     });
     
+    // Attempt to load locally saved data
+    loadData();
+    
     buildTable();
+    
+    $('#tableContainer').jtable('reload', function ()
+    {
+        applyLazyload();
+    });
     
     $('#getButton').click(function ()
     {
