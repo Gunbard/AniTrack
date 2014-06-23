@@ -223,6 +223,11 @@ function buildTable()
                     generateTextFileDownload('animu.csv', csvData);
                 }
             }]
+        },
+        recordsLoaded: function (event, data)
+        {
+            // Re-bind lazy load to images
+            applyLazyload();
         }
     });
 }
@@ -254,7 +259,6 @@ $(function ()
             tableData = JSON.parse(this.result);
             $('#tableContainer').jtable('reload', function ()
             {
-                applyLazyload();
                 saveData();
             });
         };
@@ -272,10 +276,7 @@ $(function ()
     
     buildTable();
     
-    $('#tableContainer').jtable('reload', function ()
-    {
-        applyLazyload();
-    });
+    $('#tableContainer').jtable('reload');
     
     $('#getButton').click(function ()
     {
@@ -301,10 +302,7 @@ $(function ()
                 'Records': entries
             };
                         
-            $('#tableContainer').jtable('reload', function ()
-            {
-                applyLazyload();
-            });
+            $('#tableContainer').jtable('reload');
             
             $('#progressBar').progressbar
             ({

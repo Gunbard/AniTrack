@@ -167,9 +167,6 @@ function getAdditionalData(entry)
         
         saveData();
         
-        $('#tableContainer').jtable('reload', function ()
-        {
-            applyLazyload();
-        });
+        $('#tableContainer').jtable('reload');
     });
 }
