@@ -129,10 +129,10 @@ function buildTable()
                 width: '50%',
                 display: function (data)
                 {
-                    return '<a target="_blank" href="' + 
+                    return '<span class="tableItem"><a target="_blank" href="' + 
                            DATA_SOURCE_ROOT + data.record.url + '">' + 
                            data.record.title + 
-                           '</a>';
+                           '</a></span>';
                 }
             },
             rating: 
@@ -141,12 +141,10 @@ function buildTable()
                 width: '5%',
                 display: function (data)
                 {
-                    if (data.record.rating > -1)
-                    {
-                        return RATINGS_DISPLAY_TEXT[data.record.rating]; 
-                    }
-                    
-                    return '--';
+                    var displayText = (data.record.rating > -1) ? 
+                                      RATINGS_DISPLAY_TEXT[data.record.rating] : '--';
+
+                    return '<span class="tableItem">' + displayText + '</span>'; 
                 }
             },
             category:
@@ -155,31 +153,44 @@ function buildTable()
                 width: '5%',
                 display: function (data)
                 {
+                    var displayText;
                     switch (parseInt(data.record.category))
                     {
                         case CATEGORY_TYPE.wantToSee:
-                            return 'Want to See';
+                            displayText = 'Want to See';
                             break;
                         case CATEGORY_TYPE.seenSome:
-                            return 'Seen Some';
+                            displayText = 'Seen Some';
                             break;
                         case CATEGORY_TYPE.seenAll:
-                            return 'Seen All';
+                            displayText = 'Seen All';
                             break;
                         default:
-                            return '--'
+                            displayText = '--'
                     }
+                    
+                    return '<span class="tableItem">' + displayText + '</span>'; 
+
                 }
             },
             eps:
             {
                 title: 'Ep. Length',
-                width: '5%'
+                width: '5%',
+                display: function (data)
+                {
+                    var displayText = (data.record.eps) ? data.record.eps : '--';
+                    return '<span class="tableItem">' + displayText + '</span>';
+                }
             },
             comment:
             {
                 title: 'Comment',
-                width: '20%'
+                width: '20%',
+                display: function (data)
+                {
+                    return '<span class="tableComment">' + data.record.comment + '</span>';
+                }
             },
             getData:
             {
@@ -188,7 +199,7 @@ function buildTable()
                 width: '5%',
                 display: function (data)
                 {
-                    return '<input type="button" value="Get Data" onClick="getAdditionalData(tableData.Records[' + tableData.Records.indexOf(data.record) + '])">'
+                    return '<input type="button" value="Get Data" onClick="getAdditionalData(tableData.Records[' + tableData.Records.indexOf(data.record) + '])">';
                 }
             }
         },

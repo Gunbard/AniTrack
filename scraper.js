@@ -22,8 +22,8 @@
         'op':               string
         'ed':               string
         'vintage':          string
-        'epLength':         int
-        'thumbnail':        Base64 image
+        'eps':              int
+        'thumbnail':        url string
         
         USER ADDED:
         'dateStarted':      date
