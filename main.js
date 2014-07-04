@@ -126,13 +126,26 @@ function buildTable()
             title:
             {
                 title: 'Title',
-                width: '50%',
+                width: '35%',
                 display: function (data)
                 {
-                    return '<span class="tableItem"><a target="_blank" href="' + 
+                    return '<span class="table-item"><a target="_blank" href="' + 
                            DATA_SOURCE_ROOT + data.record.url + '">' + 
                            data.record.title + 
                            '</a></span>';
+                }
+            },
+            summary: 
+            {
+                title: 'Summary',
+                sorting: false,
+                width: '15%',
+                display: function (data)
+                {
+                    // Strangely enough, NOT wrapping the text in the span will vertically
+                    // center it
+                    var displayText = (data.record.summary) ? data.record.summary : '--';
+                    return '<div class="long-text"><span class="table-comment">' + displayText + '</span></div>';
                 }
             },
             rating: 
@@ -144,7 +157,7 @@ function buildTable()
                     var displayText = (data.record.rating > -1) ? 
                                       RATINGS_DISPLAY_TEXT[data.record.rating] : '--';
 
-                    return '<span class="tableItem">' + displayText + '</span>'; 
+                    return '<span class="table-item">' + displayText + '</span>'; 
                 }
             },
             category:
@@ -169,7 +182,7 @@ function buildTable()
                             displayText = '--'
                     }
                     
-                    return '<span class="tableItem">' + displayText + '</span>'; 
+                    return '<span class="table-item">' + displayText + '</span>'; 
 
                 }
             },
@@ -180,7 +193,7 @@ function buildTable()
                 display: function (data)
                 {
                     var displayText = (data.record.eps) ? data.record.eps : '--';
-                    return '<span class="tableItem">' + displayText + '</span>';
+                    return '<span class="table-item">' + displayText + '</span>';
                 }
             },
             comment:
@@ -189,7 +202,7 @@ function buildTable()
                 width: '20%',
                 display: function (data)
                 {
-                    return '<span class="tableComment">' + data.record.comment + '</span>';
+                    return '<div class="long-text">' + data.record.comment + '</div>';
                 }
             },
             getData:

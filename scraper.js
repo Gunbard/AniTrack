@@ -70,9 +70,9 @@ function getEntriesForCategory(username, category, callback)
                     var url = entryContainer && entryContainer.a ? 
                               entryContainer.a.href : '';
                     var rating = currentEntry[1] && currentEntry[1].p ? 
-                                 currentEntry[1].p : '--';
+                                 currentEntry[1].p : '';
                     var comment = currentEntry[2] ? 
-                                  currentEntry[2].small : '--';
+                                  currentEntry[2].small : '';
                     
                     // Convert rating to a number so we can do calculations and stuff
                     rating = RATINGS_TYPE[rating];
@@ -149,9 +149,11 @@ function getAdditionalData(entry)
             }
         }
         
+        // Save response for now
         entry['titleData'] = info;
         
         entry['eps'] = (info['Number of episodes']) ? info['Number of episodes'][0] : 1;
+        entry['summary'] = info['Plot Summary'];
         
         if (info['Picture']) 
         {
