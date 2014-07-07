@@ -142,9 +142,7 @@ function buildTable()
                 width: '15%',
                 display: function (data)
                 {
-                    // Strangely enough, NOT wrapping the text in the span will vertically
-                    // center it
-                    var displayText = (data.record.summary) ? data.record.summary : '--';
+                    var displayText = (data.record.summary) ? data.record.summary : '';
                     return '<div class="long-text"><span class="table-comment">' + displayText + '</span></div>';
                 }
             },
@@ -155,7 +153,7 @@ function buildTable()
                 display: function (data)
                 {
                     var displayText = (data.record.rating > -1) ? 
-                                      RATINGS_DISPLAY_TEXT[data.record.rating] : '--';
+                                      RATINGS_DISPLAY_TEXT[data.record.rating] : '';
 
                     return '<span class="table-item">' + displayText + '</span>'; 
                 }
@@ -179,7 +177,7 @@ function buildTable()
                             displayText = 'Seen All';
                             break;
                         default:
-                            displayText = '--'
+                            displayText = ''
                     }
                     
                     return '<span class="table-item">' + displayText + '</span>'; 
@@ -192,7 +190,7 @@ function buildTable()
                 width: '5%',
                 display: function (data)
                 {
-                    var displayText = (data.record.eps) ? data.record.eps : '--';
+                    var displayText = (data.record.eps) ? data.record.eps : '';
                     return '<span class="table-item">' + displayText + '</span>';
                 }
             },

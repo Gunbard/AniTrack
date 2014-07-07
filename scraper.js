@@ -65,6 +65,7 @@ function getEntriesForCategory(username, category, callback)
                         continue;
                     }
                     
+                    // Default to blank so it can still be sorted
                     var title = entryContainer && entryContainer.a ? 
                                 entryContainer.a.font.content : '';
                     var url = entryContainer && entryContainer.a ? 
@@ -105,6 +106,8 @@ function getEntriesForCategory(username, category, callback)
 }
 
 /**
+ Obtains additional encyclopedia data for a title
+ @param entry {ENTRY_MODEL} The entry to look up
  */
 function getAdditionalData(entry)
 {
@@ -153,7 +156,7 @@ function getAdditionalData(entry)
         entry['titleData'] = info;
         
         entry['eps'] = (info['Number of episodes']) ? info['Number of episodes'][0] : 1;
-        entry['summary'] = info['Plot Summary'];
+        entry['summary'] = (info['Plot Summary']) ? info['Plot Summary'] : '';
         
         if (info['Picture']) 
         {
