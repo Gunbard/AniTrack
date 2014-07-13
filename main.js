@@ -333,4 +333,45 @@ $(function ()
         });
         
     });
+    
+    $('#appendButton').click(function ()
+    {
+        var username = $('#inputUsername').val();
+        if (username.length == 0)
+        {
+            return;
+        }
+     
+        // SPIN TO WIN
+        $('#progressBar').progressbar
+        ({
+            value: false
+        });
+    
+        appendEntriesFromUser(tableData.Records, username, CATEGORY_TYPE.all, function (newEntries)
+        {
+            var displayText = 'Got ' + newEntries.length + ' new title(s)\n';
+            for (var i = 0; i < newEntries.length; i++)
+            {
+                displayText += newEntries[i].title + '\n';
+            }
+            
+            alert(displayText);
+            
+            if (newEntries.length == 0)
+            {
+                return;
+            }
+            
+            // Add new entries
+            tableData.Records = tableData.Records.concat(newEntries);
+            
+            $('#tableContainer').jtable('reload');
+            
+            $('#progressBar').progressbar
+            ({
+                value: true
+            });
+        });
+    });
 });

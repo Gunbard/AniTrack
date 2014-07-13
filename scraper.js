@@ -106,6 +106,40 @@ function getEntriesForCategory(username, category, callback)
 }
 
 /**
+ Gets entries from a user and appends new ones to current list
+ @param username {string} The username to query
+ @param category {CATEGORY_TYPE} The category to query
+ @param callback Called when finished with first param new entries {array}
+ */
+function appendEntriesFromUser(currentEntries, username, category, callback)
+{
+    getEntriesForCategory(username, category, function (entries)
+    {
+        var newEntries = [];
+        
+        for (var i = 0; i < entries.length; i++)
+        {
+            var found = false;
+            for (var j = 0; j < currentEntries.length; j++)
+            {
+                if (entries[i].title && entries[i].title == currentEntries[j].title)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            
+            if (!found)
+            {
+                newEntries.push(entries[i]);
+            }
+        }
+        
+        callback(newEntries);
+    });
+}
+
+/**
  Obtains additional encyclopedia data for a title
  @param entry {ENTRY_MODEL} The entry to look up
  */
