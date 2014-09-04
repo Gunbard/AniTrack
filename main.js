@@ -143,7 +143,7 @@ function buildTable()
             title:
             {
                 title: 'Title',
-                width: '35%',
+                width: '30%',
                 display: function (data)
                 {
                     return '<span class="table-item"><a target="_blank" href="' + 
@@ -160,6 +160,29 @@ function buildTable()
                 display: function (data)
                 {
                     var displayText = (data.record.summary) ? data.record.summary : '';
+                    return '<div class="long-text"><span class="table-comment">' + displayText + '</span></div>';
+                }
+            },
+            genres:
+            {
+                title: 'Genres',
+                sorting: false,
+                width: '10%',
+                display: function (data)
+                {
+                    var displayText = '';
+                    if (data.record.genres)
+                    {
+                        for (var i = 0; i < data.record.genres.length; i++)
+                        {
+                            displayText += data.record.genres[i];
+                            if (i < data.record.genres.length - 1)
+                            {
+                                displayText += ', ';
+                            }
+                        }
+                    }
+                    
                     return '<div class="long-text"><span class="table-comment">' + displayText + '</span></div>';
                 }
             },
@@ -203,7 +226,7 @@ function buildTable()
             },
             eps:
             {
-                title: 'Ep. Length',
+                title: 'Length',
                 width: '5%',
                 display: function (data)
                 {
