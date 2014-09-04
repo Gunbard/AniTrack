@@ -191,7 +191,7 @@ function getAdditionalData(entry)
         
         entry['eps'] = (info['Number of episodes']) ? info['Number of episodes'][0] : 1;
         entry['summary'] = (info['Plot Summary']) ? info['Plot Summary'] : '';
-        entry['genres'] = (info['Genres']) ? info['Genres'].split(',') : '';
+        entry['genres'] = (info['Genres']) ? info['Genres'] : '';
 
         if (info['Picture']) 
         {
