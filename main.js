@@ -6,6 +6,8 @@
  License: MIT
  */
  
+var sortingDirection = 'ASC';
+ 
 var tableData = 
 {
     'Result': 'OK',
@@ -78,6 +80,7 @@ function buildTable()
     ({
         title: 'Chinese Girl Cartoons',
         sorting: true,
+        paging: true,
         defaultSorting: 'title ASC',
         actions: 
         {
@@ -89,11 +92,25 @@ function buildTable()
                 var fieldToSort = sortingCommand[0];
                 var direction = (sortingCommand[1] == 'ASC');
                 
+                var sortingChanged = (sortingDirection == sortingCommand[1]);
+                sortingDirection = sortingCommand[1];
+                
                 var unsortedData = tableData.Records;
-                var sortedData = sortByKey(unsortedData, fieldToSort, direction);
+                
+                // Sorting is rather expensive so only do it if
+                // the sorting direction actually changed
+                var sortedData = (sortingChanged) ? sortByKey(unsortedData, fieldToSort, direction) : unsortedData;
+                
                 tableData.Records = sortedData;
                 
-                return tableData;
+                var pagedData = 
+                {
+                    'Result': 'OK',
+                    'Records': tableData.Records.slice(jtParams.jtStartIndex, parseInt(jtParams.jtStartIndex, 10) + parseInt(jtParams.jtPageSize, 10)),
+                    'TotalRecordCount': sortedData.length
+                };
+                
+                return pagedData;
             }
         },
         fields: 
