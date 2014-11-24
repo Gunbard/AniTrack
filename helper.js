@@ -102,6 +102,11 @@ function valueByKey(data, searchKey, callback)
  */
 function sortByKey(arrayToSort, keyName, ascend)
 {
+    if (!arrayToSort || arrayToSort.length == 0)
+    {
+        return [];
+    }
+
     return arrayToSort.sort(function (a, b)
     {
         if (ascend)

@@ -7,7 +7,8 @@
  */
  
 var sortingDirection = 'ASC';
- 
+var dataRecords = [];
+
 var tableData = 
 {
     'Result': 'OK',
@@ -39,7 +40,7 @@ catch (e)
  */
 function saveData()
 {
-    localStorage.setItem('savedTableData', JSON.stringify(tableData));
+    localStorage.setItem('savedTableData', JSON.stringify(dataRecords));
     console.log('[INFO] Save OK');
 }
 
@@ -51,7 +52,7 @@ function loadData()
     var saveData = localStorage.savedTableData;
     if (saveData)
     {
-        tableData = JSON.parse(saveData);
+        dataRecords = JSON.parse(saveData);
         console.log('[INFO] Load OK');
     }
 }
@@ -71,8 +72,8 @@ function applyLazyload()
 /**
  Initializes the jTable
  */
-function buildTable()
-{
+function buildTable(data)
+{   
     $('#tableContainer').jtable({});
     $('#tableContainer').jtable('destroy');
 
@@ -95,10 +96,7 @@ function buildTable()
                 var sortingChanged = (sortingDirection == sortingCommand[1]);
                 sortingDirection = sortingCommand[1];
                 
-                var unsortedData = tableData.Records;
-                
-                // Sorting is rather expensive so only do it if
-                // the sorting direction actually changed
+                var unsortedData = data;
                 var sortedData = (sortingChanged) ? sortByKey(unsortedData, fieldToSort, direction) : unsortedData;
                 
                 tableData.Records = sortedData;
@@ -292,6 +290,33 @@ function buildTable()
             applyLazyload();
         }
     });
+    
+    $('#tableContainer').jtable('reload');
+}
+
+/**
+ Performs a search
+ @param {string} query The search query
+ */
+function executeSearch(query)
+{
+    if (dataRecords.length == 0 || query.length == 0 || query.length < 3)
+    {
+        return;
+    }
+    
+    query = query.toLowerCase();
+    
+    var filterTest = function (entry)
+    {
+        return (entry.title.toLowerCase().indexOf(query) != -1);
+    };
+
+    var filteredRecords = dataRecords.filter(filterTest);
+    if (filteredRecords && filteredRecords.length > 0)
+    {
+        buildTable(filteredRecords);
+    }
 }
 
 // Ready
@@ -326,7 +351,13 @@ $(function ()
         };
         
         reader.readAsText(selectedFile);
-    })
+    });
+    
+    // Configure search
+    $('#searchField').on('input', function ()
+    {
+        executeSearch(this.value);
+    });
     
     $('#progressBar').progressbar
     ({
@@ -335,8 +366,7 @@ $(function ()
     
     // Attempt to load locally saved data
     loadData();
-    
-    buildTable();
+    buildTable(dataRecords);
     
     $('#tableContainer').jtable('reload');
     
@@ -357,14 +387,19 @@ $(function ()
         
         getEntriesForCategory(username, CATEGORY_TYPE.all, function (entries)
         {
+            // Shallow clone all the entries
+            dataRecords = entries.slice(0);
+        
             // Format data for use by jTable
-            tableData = 
+            /*tableData = 
             {
                 'Result': 'OK',
                 'Records': entries
-            };
+            };*/
                         
-            $('#tableContainer').jtable('reload');
+            //$('#tableContainer').jtable('reload');
+            buildTable(dataRecords);
+            
             
             $('#progressBar').progressbar
             ({
