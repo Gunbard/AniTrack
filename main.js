@@ -387,19 +387,20 @@ $(function ()
         
         getEntriesForCategory(username, CATEGORY_TYPE.all, function (entries)
         {
+            $('#progressBar').progressbar
+            ({
+                value: true
+            });
+        
             if (entries.length == 0)
             {
+                alert('Unable to get entries!');
                 return;
             }
         
             dataRecords = entries.slice(0); // Shallow clone all the entries
             saveData();
             buildTable(dataRecords);
-            
-            $('#progressBar').progressbar
-            ({
-                value: true
-            });
         });
         
     });
