@@ -300,7 +300,7 @@ function buildTable(data)
  */
 function executeSearch(query)
 {
-    if (dataRecords.length == 0 || query.length == 0 || query.length < 3)
+    if (dataRecords.length == 0)
     {
         return;
     }
@@ -387,19 +387,14 @@ $(function ()
         
         getEntriesForCategory(username, CATEGORY_TYPE.all, function (entries)
         {
-            // Shallow clone all the entries
-            dataRecords = entries.slice(0);
-        
-            // Format data for use by jTable
-            /*tableData = 
+            if (entries.length == 0)
             {
-                'Result': 'OK',
-                'Records': entries
-            };*/
-                        
-            //$('#tableContainer').jtable('reload');
+                return;
+            }
+        
+            dataRecords = entries.slice(0); // Shallow clone all the entries
+            saveData();
             buildTable(dataRecords);
-            
             
             $('#progressBar').progressbar
             ({
